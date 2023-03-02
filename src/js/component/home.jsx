@@ -7,17 +7,31 @@ import "../../styles/styles.css";
 
 //create your first component
 const Home = () => {
-  const arrTemp = ["Ir al super", "lavar el auto"];
+  const [arrTemp, setArrtemp] =useState(["Ir al super", "lavar el auto"]) ;
+  const eliminarTarea = (indice) => {
+	setArrtemp(
+		arrTemp.filter((item, index)=> {
+	return index != indice
+	})
+	)
+  }
+  
 
   return (
     <div className="container justify-content-center align-items-center">
       <div className="row d-flex justify-content-center">
         <h1 className="row d-flex justify-content-center"> todos </h1>
-        <input placeholder="What needs to be done?" />
+        <input placeholder="What needs to be done?" 
+		onKeyDown={(e)=>{
+			if( e.keyCode=="13"){
+				setArrtemp([...arrTemp, e.target.value])
+			}
+		}}
+		/>
       </div>
       <div className="row d-flex justify-content-center">
 	  {arrTemp && arrTemp.length > 0 ?
-				    <>{arrTemp.map((item, index)=> { //Funcion callback
+				    <>{arrTemp.map((item, index)=> { 
 					return<li key={index} className="d-flex justify-content-between">
 						{item} - {item.done ? "Realizada" : "Por Hacer"}
 						<button 
@@ -32,12 +46,13 @@ const Home = () => {
 					</li>
 					})}</>
 				:
-				<><h1>No pending tasks</h1></>
+				<><h1>There are no items, add items</h1></>
 				}
 	
 
 
       </div>
+	  <h6>{arrTemp.length} item left</h6>
     </div>
   );
 };
